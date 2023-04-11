@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:teste_ciss/data/injection/injection.config.dart';
+import 'package:teste_ciss/core/injection/injection.config.dart';
 
 final getIt = GetIt.instance;
 

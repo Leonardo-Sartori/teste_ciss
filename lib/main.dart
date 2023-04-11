@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:teste_ciss/data/injection/injection.dart';
-import 'package:teste_ciss/pages/home/home_page.dart';
+import 'package:teste_ciss/core/injection/injection.dart';
+import 'package:teste_ciss/presentation/pages/user/user_list_view.dart';
 
 void main() {
   configureDependencies();
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const UserListView(),
     );
   }
 }
