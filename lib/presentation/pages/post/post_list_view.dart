@@ -11,6 +11,7 @@ import 'package:teste_ciss/presentation/pages/post/post_list_item.dart';
 import 'package:teste_ciss/presentation/pages/user/user_form_page.dart';
 import 'package:teste_ciss/shared/components/app_no_data.dart';
 import 'package:teste_ciss/shared/components/custom_bottom_navigator_bar.dart';
+import 'package:teste_ciss/shared/components/custom_floating_action_button.dart';
 import 'package:teste_ciss/shared/utils/navigator/nav.dart';
 
 class PostListView extends StatefulWidget {
@@ -134,10 +135,10 @@ class _PostListViewState extends State<PostListView> {
           }
         },
       ),
-      // floatingActionButton: CustomFloatingActionButton(
-      //   goTo: () => _goToForm(),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: CustomFloatingActionButton(
+        goTo: () => _goToForm(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 

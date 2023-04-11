@@ -12,7 +12,7 @@ class AlbumDatasource {
 
   AlbumDatasource({required this.jsonPlaceholderApi});
 
-  Future<List<Album>> getAlbumsByUser({required userId}) async {
+  Future<List<Album>> getAlbumsByUser({required int userId}) async {
     final response = await jsonPlaceholderApi.client.get(Uri.parse('${ConstantsApi.baseUrl}/users/$userId/albums'));
     final responseData = json.decode(response.body);
     late List<Album> albums = [];

@@ -12,7 +12,7 @@ class PostDatasource {
 
   PostDatasource({required this.jsonPlaceholderApi});
 
-  Future<List<Post>> getPostsByUser({required userId}) async {
+  Future<List<Post>> getPostsByUser({required int userId}) async {
     final response = await jsonPlaceholderApi.client.get(Uri.parse('${ConstantsApi.baseUrl}/users/$userId/posts'));
     final responseData = json.decode(response.body);
     late List<Post> posts = [];

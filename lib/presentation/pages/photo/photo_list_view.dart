@@ -3,30 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_ciss/core/injection/injection.dart';
 import 'package:teste_ciss/data/models/album.dart';
-import 'package:teste_ciss/data/models/user.dart';
-import 'package:teste_ciss/presentation/blocs/album/album_bloc.dart';
-import 'package:teste_ciss/presentation/blocs/album/album_event.dart';
+import 'package:teste_ciss/data/models/photo.dart';
 import 'package:teste_ciss/presentation/blocs/album/album_state.dart';
-import 'package:teste_ciss/presentation/pages/album/album_list_item.dart';
-import 'package:teste_ciss/presentation/pages/photo/photo_list_view.dart';
+import 'package:teste_ciss/presentation/blocs/photo/photo_bloc.dart';
+import 'package:teste_ciss/presentation/blocs/photo/photo_event.dart';
+import 'package:teste_ciss/presentation/blocs/photo/photo_state.dart';
+import 'package:teste_ciss/presentation/pages/photo/photo_list_item.dart';
 import 'package:teste_ciss/presentation/pages/user/user_form_page.dart';
 import 'package:teste_ciss/shared/components/app_no_data.dart';
 import 'package:teste_ciss/shared/components/custom_bottom_navigator_bar.dart';
 import 'package:teste_ciss/shared/utils/navigator/nav.dart';
 
-class AlbumListView extends StatefulWidget {
-  final User user;
+class PhotoListView extends StatefulWidget {
+  final Album album;
 
-  const AlbumListView({Key? key, required this.user}) : super(key: key);
+  const PhotoListView({Key? key, required this.album}) : super(key: key);
 
   @override
-  State<AlbumListView> createState() => _AlbumListViewState();
+  State<PhotoListView> createState() => _PhotoListViewState();
 }
 
-class _AlbumListViewState extends State<AlbumListView> {
-  final _albumBloc = getIt.get<AlbumBloc>();
-  List<Album> filteredAlbums = <Album>[];
-  List<Album> albums = <Album>[];
+class _PhotoListViewState extends State<PhotoListView> {
+  final _photoBloc = getIt.get<PhotoBloc>();
+  List<Photo> filteredPhotos = <Photo>[];
+  List<Photo> photos = <Photo>[];
   int listLenght = 0;
 
   final streamIconSearchField = StreamController<String>.broadcast();
@@ -37,7 +37,7 @@ class _AlbumListViewState extends State<AlbumListView> {
   @override
   void initState() {
     streamIconSearchField.sink.add("search");
-    _getAlbums();
+    _getPhotos();
     super.initState();
   }
 
@@ -46,8 +46,8 @@ class _AlbumListViewState extends State<AlbumListView> {
     super.dispose();
   }
 
-  void _getAlbums() {
-    _albumBloc.add(AlbumLoadingEvent(userId: widget.user.id));
+  void _getPhotos() {
+    _photoBloc.add(PhotoLoadingEvent(albumId: widget.album.id));
   }
 
   @override
@@ -59,7 +59,7 @@ class _AlbumListViewState extends State<AlbumListView> {
             builder: (context, snapshot) {
               return snapshot.hasData
                   ? snapshot.data!
-                  : const Text("Álbuns");
+                  : const Text("Fotos");
             }),
         actions: [
           StreamBuilder<String>(
@@ -98,10 +98,10 @@ class _AlbumListViewState extends State<AlbumListView> {
                       } else {
                         // _searchIcon = const Icon(Icons.search);
                         streamIconSearchField.sink.add("search");
-                        _appBarTitle = const Text('Álbuns');
-                        filteredAlbums = albums;
+                        _appBarTitle = const Text('Fotos');
+                        filteredPhotos = photos;
                         _filter.clear();
-                        _getAlbums();
+                        _getPhotos();
                       }
 
                       streamContentAppBar.sink.add(_appBarTitle!);
@@ -110,25 +110,25 @@ class _AlbumListViewState extends State<AlbumListView> {
         ],
       ),
       body: BlocProvider(
-        create: (context) => _albumBloc,
+        create: (context) => _photoBloc,
         child: _body(),
       ),
-      bottomNavigationBar: BlocConsumer<AlbumBloc, AlbumState>(
-        bloc: _albumBloc,
+      bottomNavigationBar: BlocConsumer<PhotoBloc, PhotoState>(
+        bloc: _photoBloc,
         listener: (context, state) {
-          if (state is AlbumLoadingState || state is AlbumErrorState) {
+          if (state is PhotoLoadingState || state is PhotoErrorState) {
             listLenght = 0;
           }
 
-          if (state is AlbumSuccessState) {
-            listLenght = state.albumList.length;
+          if (state is PhotoSuccessState) {
+            listLenght = state.photoList.length;
           }
         },
         builder: (context, state) {
-          if (state is AlbumSuccessState) {
+          if (state is PhotoSuccessState) {
             return CustomBottomNavigationBar(
               count: listLenght,
-              text: 'Álbuns',
+              text: 'Fotos',
             );
           } else {
             return Container();
@@ -143,36 +143,34 @@ class _AlbumListViewState extends State<AlbumListView> {
   }
 
   Widget _body() {
-    return BlocBuilder<AlbumBloc, AlbumState>(
-      bloc: _albumBloc,
+    return BlocBuilder<PhotoBloc, PhotoState>(
+      bloc: _photoBloc,
       builder: (context, state) {
         if (state is AlbumSuccessState) {
-          albums = state.albumList;
-          filteredAlbums = albums;
-          listLenght = state.albumList.length;
+          photos = state.photoList;
+          filteredPhotos = photos;
+          listLenght = state.photoList.length;
         }
 
         if (state is AlbumSuccessState) {
-          return filteredAlbums.isNotEmpty
+          return filteredPhotos.isNotEmpty
               ? ListView.builder(
                   itemBuilder: (BuildContext context, int index) {
-                    return index >= filteredAlbums.length
+                    return index >= filteredPhotos.length
                         ? Container()
                         : Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                AlbumListItem(
-                                  user: widget.user,
-                                  album: filteredAlbums[index],
-                                  getImages: () => push(context, PhotoListView(album: filteredAlbums[index])),
+                                PhotoListItem(
+                                  photo: filteredPhotos[index],
                                 ),
                                 const SizedBox(height: 20,),
                               ],
                             ),
                           );
                   },
-                  itemCount: filteredAlbums.length,
+                  itemCount: filteredPhotos.length,
                 )
               : AppNoData(text: "Nada Encontrado !");
         } else {
@@ -180,6 +178,10 @@ class _AlbumListViewState extends State<AlbumListView> {
         }
       },
     );
+  }
+
+  void _goToForm(){
+    push(context, UserFormPage());
   }
 
 }

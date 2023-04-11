@@ -27,7 +27,7 @@ class PostListItem extends StatelessWidget {
               builder: (context, snapshot) {
                 return ListTile(
                   title: Text(post.title, style: textStyle()),
-                  subtitle: Flexible(child: Text(post.body)),
+                  subtitle: Text(post.body),
                   dense: true,
                 );
               }),
