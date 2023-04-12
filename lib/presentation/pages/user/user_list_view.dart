@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_ciss/core/injection/injection.dart';
@@ -9,7 +8,7 @@ import 'package:teste_ciss/presentation/blocs/user/user_state.dart';
 import 'package:teste_ciss/presentation/pages/album/album_list_view.dart';
 import 'package:teste_ciss/presentation/pages/post/post_list_view.dart';
 import 'package:teste_ciss/presentation/pages/user/user_list_item.dart';
-import 'package:teste_ciss/shared/components/app_no_data.dart';
+import 'package:teste_ciss/shared/components/app_nodata.dart';
 import 'package:teste_ciss/shared/components/custom_bottom_navigator_bar.dart';
 import 'package:teste_ciss/shared/utils/navigator/nav.dart';
 
@@ -73,10 +72,6 @@ class _UserListViewState extends State<UserListView> {
           }
         },
       ),
-      // floatingActionButton: CustomFloatingActionButton(
-      //   goTo: () => _goToForm(),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 
@@ -112,7 +107,7 @@ class _UserListViewState extends State<UserListView> {
                   },
                   itemCount: filteredUsers.length,
                 )
-              : AppNoData(text: "Nada Encontrado !");
+              : AppNoData();
         } else {
           return Container();
         }

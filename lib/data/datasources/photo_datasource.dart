@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
-import 'package:teste_ciss/data/models/album.dart';
 import 'package:teste_ciss/data/models/photo.dart';
-import 'package:teste_ciss/data/models/user.dart';
 import 'package:teste_ciss/data/services/json_placeholder_api/json_placeholder_api.dart';
 import 'package:teste_ciss/shared/constants/api.dart';
 
@@ -20,12 +18,7 @@ class PhotoDatasource {
 
     for (dynamic photo in responseData) {
         photos.add(
-          Photo(id: photo["id"], 
-          title: photo["title"], 
-          url: photo["url"], 
-          thumbnailUrl: photo["thumbnailUrl"],
-          album: Album(id: photo["albumId"], title: "", user: User(id: 0, name: "", username: "", email: "")),
-        )
+          Photo.fromMap(photo),
         );
       }
     return photos;

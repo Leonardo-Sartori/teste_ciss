@@ -18,7 +18,6 @@ class AppTextfield extends StatelessWidget {
   TextCapitalization textCapitalization;
   ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
-  //bool readOnly;
   final List<TextInputFormatter>? maskFormatter;
 
   AppTextfield(
@@ -30,9 +29,7 @@ class AppTextfield extends StatelessWidget {
     this.required = true,
     this.textInputAction,
     this.autoFocus,
-    //this.readOnly = false,
     this.focusNode,
-    this.nextFocus,
     this.validator,
     this.inputType,
     this.onChanged,
@@ -56,7 +53,6 @@ class AppTextfield extends StatelessWidget {
           focusNode: focusNode,
           maxLines: maxLines,
           autofocus: autoFocus ?? false,
-          //readOnly: readOnly,
           textCapitalization: textCapitalization,
           onFieldSubmitted: (String text) {
             if (nextFocus != null) {
@@ -64,19 +60,10 @@ class AppTextfield extends StatelessWidget {
             }
           },
           decoration: InputDecoration(
-            // suffixIcon: invisible != null ? IconButton(
-            //   icon: Icon(invisible! ? Icons.visibility : Icons.visibility_off),
-            //   onPressed: (){
-            //     invisible = !invisible!;
-            //     (context as Element).markNeedsBuild();
-            //   },
-            //   color: Colors.grey[800],
-            // ) : null,
             labelText: text,
             labelStyle: const TextStyle(
                 fontSize: 15,),
           ),
-          // obscureText: invisible != null ? invisible! : false,
           keyboardType: inputType,
         ),
       ),

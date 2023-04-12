@@ -19,11 +19,7 @@ class AlbumDatasource {
 
     for (dynamic album in responseData) {
         albums.add(
-          Album(
-            id: album["id"],
-            title: album["title"],
-            user: User(id: album["userId"], name: "", username: "", email: "")
-          ),
+          Album.fromMap(album),
         );
       }
     return albums;

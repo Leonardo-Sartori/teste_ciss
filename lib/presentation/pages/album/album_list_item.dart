@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:teste_ciss/data/models/album.dart';
 import 'package:teste_ciss/data/models/user.dart';

@@ -9,10 +9,11 @@ import 'package:teste_ciss/presentation/blocs/post/post_event.dart';
 import 'package:teste_ciss/presentation/blocs/post/post_state.dart';
 import 'package:teste_ciss/presentation/pages/comment/comment_list_view.dart';
 import 'package:teste_ciss/presentation/pages/post/post_list_item.dart';
-import 'package:teste_ciss/presentation/pages/user/user_form_page.dart';
-import 'package:teste_ciss/shared/components/app_no_data.dart';
+import 'package:teste_ciss/presentation/pages/post/post_form_page.dart';
+import 'package:teste_ciss/shared/components/alerts.dart';
 import 'package:teste_ciss/shared/components/custom_bottom_navigator_bar.dart';
 import 'package:teste_ciss/shared/components/custom_floating_action_button.dart';
+import 'package:teste_ciss/shared/components/easy_loading.dart';
 import 'package:teste_ciss/shared/utils/navigator/nav.dart';
 
 class PostListView extends StatefulWidget {
@@ -51,6 +52,23 @@ class _PostListViewState extends State<PostListView> {
     _postBloc.add(PostLoadingEvent(userId: widget.user.id));
   }
 
+  void _goToForm({Post? post}) {
+    push(
+        context,
+        PostFormPage(
+          user: widget.user,
+          post: post,
+        ),
+        replace: true);
+  }
+
+  void deleteComment({required Post post}) {
+    confirmAlert("Deseja realmente excluir o comentário  ?", context, () {
+      dismiss(context);
+      _postBloc.add(PostDeletingEvent(post: post));
+    }, true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,9 +76,7 @@ class _PostListViewState extends State<PostListView> {
         title: StreamBuilder<Widget>(
             stream: streamContentAppBar.stream,
             builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? snapshot.data!
-                  : const Text("Posts");
+              return snapshot.hasData ? snapshot.data! : const Text("Posts");
             }),
         actions: [
           StreamBuilder<String>(
@@ -72,10 +88,8 @@ class _PostListViewState extends State<PostListView> {
                         : const Icon(Icons.clear),
                     onPressed: () {
                       if (!snapshot.hasData || snapshot.data == "search") {
-                        // _searchIcon = const Icon(Icons.close);
                         streamIconSearchField.sink.add("clear");
                         _appBarTitle = TextField(
-                          // style: const TextStyle(),
                           controller: _filter,
                           autofocus: true,
                           decoration: const InputDecoration(
@@ -87,13 +101,13 @@ class _PostListViewState extends State<PostListView> {
                               Icons.search,
                             ),
                             hintText: 'Buscar...',
-                            // hintStyle: TextStyle(),
+                            hintStyle: TextStyle(color: Colors.white)
                           ),
                           onChanged: (value) {
-                            // _userBloc.add(ProspectSearchEvent(
-                            //     prospects: partners,
-                            //     resultSearch: [],
-                            //     searchText: value));
+                            _postBloc.add(PostSearchEvent(
+                                posts: posts,
+                                resultSearch: [],
+                                searchText: value));
                           },
                         );
                       } else {
@@ -124,9 +138,13 @@ class _PostListViewState extends State<PostListView> {
           if (state is PostSuccessState) {
             listLenght = state.postList.length;
           }
+
+          if (state is PostSearchState) {
+            listLenght = state.searchResult!.length;
+          }
         },
         builder: (context, state) {
-          if (state is PostSuccessState) {
+          if (state is PostSuccessState || state is PostSearchState) {
             return CustomBottomNavigationBar(
               count: listLenght,
               text: 'Posts',
@@ -153,7 +171,22 @@ class _PostListViewState extends State<PostListView> {
           listLenght = state.postList.length;
         }
 
-        if (state is PostSuccessState) {
+        if (state is PostSearchState) {
+          posts = state.postList;
+          filteredPosts = state.searchResult!;
+          listLenght = state.searchResult!.length;
+        }
+
+        if (state is PostDeletingSuccessState) {
+          if (state.responseCode == 200) {
+            showSuccess(text: "Elemento excluído com sucesso: ${state.post}");
+          } else {
+            showError();
+            _getPosts();
+          }
+        }
+
+        if (state is PostSuccessState || state is PostSearchState) {
           return filteredPosts.isNotEmpty
               ? ListView.builder(
                   itemBuilder: (BuildContext context, int index) {
@@ -166,25 +199,30 @@ class _PostListViewState extends State<PostListView> {
                                 PostListItem(
                                   user: widget.user,
                                   post: filteredPosts[index],
-                                  getComments: () => push(context, CommentListView(post: filteredPosts[index], user: widget.user)),
+                                  getComments: () => push(
+                                      context,
+                                      CommentListView(
+                                          post: filteredPosts[index],
+                                          user: widget.user)),
+                                  onDelete: () =>
+                                      deleteComment(post: filteredPosts[index]),
+                                  onEdit: () =>
+                                      _goToForm(post: filteredPosts[index]),
                                 ),
-                                const SizedBox(height: 20,),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                               ],
                             ),
                           );
                   },
                   itemCount: filteredPosts.length,
                 )
-              : AppNoData(text: "Nada Encontrado !");
+              : const Center(child: Text("Nenhum registro atende a pesquisa !"));
         } else {
           return Container();
         }
       },
     );
   }
-
-  void _goToForm(){
-    push(context, UserFormPage());
-  }
-
 }

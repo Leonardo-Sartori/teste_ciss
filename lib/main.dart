@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:teste_ciss/core/injection/injection.dart';
 import 'package:teste_ciss/presentation/pages/user/user_list_view.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: const UserListView(),
+      builder: EasyLoading.init(),
     );
   }
 }

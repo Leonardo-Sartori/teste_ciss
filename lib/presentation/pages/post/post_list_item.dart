@@ -6,13 +6,18 @@ class PostListItem extends StatelessWidget {
   final Post post;
   final User user;
   final Function getComments;
+  final Function onDelete;
+  final Function onEdit;
 
-  const PostListItem({
-    Key? key,
-    required this.post,
-    required this.user,
-    required this.getComments,
-  }) : super(key: key);
+  const PostListItem(
+      {Key? key,
+      required this.post,
+      required this.user,
+      required this.getComments,
+      required this.onDelete,
+      required this.onEdit,
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,10 @@ class PostListItem extends StatelessWidget {
             title: Text(post.title, style: fontWeightBold()),
             subtitle: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(post.body, style: textStyle(),),
+              child: Text(
+                post.body,
+                style: textStyle(),
+              ),
             ),
             dense: true,
           ),
@@ -36,6 +44,17 @@ class PostListItem extends StatelessWidget {
                     getComments();
                   }),
               const SizedBox(width: 8),
+              TextButton(
+                  child: const Text('EDITAR'),
+                  onPressed: () {
+                    onEdit();
+                  }),
+              const SizedBox(width: 8),
+              TextButton(
+                  child: const Text('EXCLUIR'),
+                  onPressed: () {
+                    onDelete();
+                  }),
             ],
           ),
         ],

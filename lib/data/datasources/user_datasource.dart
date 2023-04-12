@@ -18,12 +18,7 @@ class UserDatasource {
 
     for (dynamic user in responseData) {
         users.add(
-          User(
-            id: user["id"],
-            name: user["name"],
-            username: user["username"],
-            email: user["email"],
-          ),
+          User.fromMap(user),
         );
       }
     return users;

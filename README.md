@@ -10,6 +10,7 @@ Projeto de teste para a vaga de desenvolvedor mobile - Flutter
 
 ## Escopo inicial:
     - O projeto consiste em um CRUD básico, utilizando como API https://jsonplaceholder.typicode.com/
+    - Prototipação básica dos cards https://app.moqups.com/xEfbjppRzpu3Niuxx3DFN6PFvptykBWk/view/page/ad64222d5
 
 ## Necessidades iniciais:
     - Listagem de todos os registros;

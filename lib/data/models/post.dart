@@ -25,7 +25,6 @@ class Post extends Equatable {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id == 0 ? null : id;
     data['title'] = title;
     data['body'] = body;
     data['userId'] = user.id;
@@ -34,7 +33,7 @@ class Post extends Equatable {
 
   @override
   String toString() {
-    return title;
+    return "\n {\n id: $id, \n título: $title, \n corpo: $body \n}";
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_ciss/core/injection/injection.dart';
@@ -9,7 +8,7 @@ import 'package:teste_ciss/presentation/blocs/comment/comment_bloc.dart';
 import 'package:teste_ciss/presentation/blocs/comment/comment_event.dart';
 import 'package:teste_ciss/presentation/blocs/comment/comment_state.dart';
 import 'package:teste_ciss/presentation/pages/comment/comment_list_item.dart';
-import 'package:teste_ciss/shared/components/app_no_data.dart';
+import 'package:teste_ciss/shared/components/app_nodata.dart';
 import 'package:teste_ciss/shared/components/custom_bottom_navigator_bar.dart';
 
 class CommentListView extends StatefulWidget {
@@ -110,7 +109,7 @@ class _CommentListViewState extends State<CommentListView> {
                   },
                   itemCount: filteredComments.length,
                 )
-              : AppNoData(text: "Nada Encontrado !");
+              : const AppNoData();
         } else {
           return Container();
         }
