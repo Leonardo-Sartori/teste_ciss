@@ -26,14 +26,8 @@ class _UserListViewState extends State<UserListView> {
   List<User> users = <User>[];
   int listLenght = 0;
 
-  final streamIconSearchField = StreamController<String>.broadcast();
-  final streamContentAppBar = StreamController<Widget>.broadcast();
-  final TextEditingController _filter = TextEditingController();
-  Widget? _appBarTitle;
-
   @override
   void initState() {
-    streamIconSearchField.sink.add("search");
     _getUsers();
     super.initState();
   }
@@ -51,60 +45,7 @@ class _UserListViewState extends State<UserListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: StreamBuilder<Widget>(
-            stream: streamContentAppBar.stream,
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? snapshot.data!
-                  : const Text("Usuários");
-            }),
-        actions: [
-          StreamBuilder<String>(
-              stream: streamIconSearchField.stream,
-              builder: (context, snapshot) {
-                return IconButton(
-                    icon: !snapshot.hasData || snapshot.data == "search"
-                        ? const Icon(Icons.search)
-                        : const Icon(Icons.clear),
-                    onPressed: () {
-                      if (!snapshot.hasData || snapshot.data == "search") {
-                        // _searchIcon = const Icon(Icons.close);
-                        streamIconSearchField.sink.add("clear");
-                        _appBarTitle = TextField(
-                          // style: const TextStyle(),
-                          controller: _filter,
-                          autofocus: true,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.transparent, width: 1.0),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                            ),
-                            hintText: 'Buscar...',
-                            // hintStyle: TextStyle(),
-                          ),
-                          onChanged: (value) {
-                            // _userBloc.add(ProspectSearchEvent(
-                            //     prospects: partners,
-                            //     resultSearch: [],
-                            //     searchText: value));
-                          },
-                        );
-                      } else {
-                        // _searchIcon = const Icon(Icons.search);
-                        streamIconSearchField.sink.add("search");
-                        _appBarTitle = const Text('Usuários');
-                        filteredUsers = users;
-                        _filter.clear();
-                        _getUsers();
-                      }
-
-                      streamContentAppBar.sink.add(_appBarTitle!);
-                    });
-              })
-        ],
+        title: const Text("Usuários"),
       ),
       body: BlocProvider(
         create: (context) => _userBloc,

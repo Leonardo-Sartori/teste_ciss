@@ -7,6 +7,7 @@ import 'package:teste_ciss/data/models/user.dart';
 import 'package:teste_ciss/presentation/blocs/post/post_bloc.dart';
 import 'package:teste_ciss/presentation/blocs/post/post_event.dart';
 import 'package:teste_ciss/presentation/blocs/post/post_state.dart';
+import 'package:teste_ciss/presentation/pages/comment/comment_list_view.dart';
 import 'package:teste_ciss/presentation/pages/post/post_list_item.dart';
 import 'package:teste_ciss/presentation/pages/user/user_form_page.dart';
 import 'package:teste_ciss/shared/components/app_no_data.dart';
@@ -165,7 +166,7 @@ class _PostListViewState extends State<PostListView> {
                                 PostListItem(
                                   user: widget.user,
                                   post: filteredPosts[index],
-                                  getComments: (){},
+                                  getComments: () => push(context, CommentListView(post: filteredPosts[index], user: widget.user)),
                                 ),
                                 const SizedBox(height: 20,),
                               ],

@@ -4,20 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_ciss/core/injection/injection.dart';
 import 'package:teste_ciss/data/models/album.dart';
 import 'package:teste_ciss/data/models/photo.dart';
-import 'package:teste_ciss/presentation/blocs/album/album_state.dart';
+import 'package:teste_ciss/data/models/user.dart';
 import 'package:teste_ciss/presentation/blocs/photo/photo_bloc.dart';
 import 'package:teste_ciss/presentation/blocs/photo/photo_event.dart';
 import 'package:teste_ciss/presentation/blocs/photo/photo_state.dart';
 import 'package:teste_ciss/presentation/pages/photo/photo_list_item.dart';
-import 'package:teste_ciss/presentation/pages/user/user_form_page.dart';
 import 'package:teste_ciss/shared/components/app_no_data.dart';
 import 'package:teste_ciss/shared/components/custom_bottom_navigator_bar.dart';
-import 'package:teste_ciss/shared/utils/navigator/nav.dart';
 
 class PhotoListView extends StatefulWidget {
   final Album album;
+  final User user;
 
-  const PhotoListView({Key? key, required this.album}) : super(key: key);
+  const PhotoListView({Key? key, required this.album, required this.user}) : super(key: key);
 
   @override
   State<PhotoListView> createState() => _PhotoListViewState();
@@ -29,14 +28,8 @@ class _PhotoListViewState extends State<PhotoListView> {
   List<Photo> photos = <Photo>[];
   int listLenght = 0;
 
-  final streamIconSearchField = StreamController<String>.broadcast();
-  final streamContentAppBar = StreamController<Widget>.broadcast();
-  final TextEditingController _filter = TextEditingController();
-  Widget? _appBarTitle;
-
   @override
   void initState() {
-    streamIconSearchField.sink.add("search");
     _getPhotos();
     super.initState();
   }
@@ -54,60 +47,7 @@ class _PhotoListViewState extends State<PhotoListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: StreamBuilder<Widget>(
-            stream: streamContentAppBar.stream,
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? snapshot.data!
-                  : const Text("Fotos");
-            }),
-        actions: [
-          StreamBuilder<String>(
-              stream: streamIconSearchField.stream,
-              builder: (context, snapshot) {
-                return IconButton(
-                    icon: !snapshot.hasData || snapshot.data == "search"
-                        ? const Icon(Icons.search)
-                        : const Icon(Icons.clear),
-                    onPressed: () {
-                      if (!snapshot.hasData || snapshot.data == "search") {
-                        // _searchIcon = const Icon(Icons.close);
-                        streamIconSearchField.sink.add("clear");
-                        _appBarTitle = TextField(
-                          // style: const TextStyle(),
-                          controller: _filter,
-                          autofocus: true,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.transparent, width: 1.0),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                            ),
-                            hintText: 'Buscar...',
-                            // hintStyle: TextStyle(),
-                          ),
-                          onChanged: (value) {
-                            // _userBloc.add(ProspectSearchEvent(
-                            //     prospects: partners,
-                            //     resultSearch: [],
-                            //     searchText: value));
-                          },
-                        );
-                      } else {
-                        // _searchIcon = const Icon(Icons.search);
-                        streamIconSearchField.sink.add("search");
-                        _appBarTitle = const Text('Fotos');
-                        filteredPhotos = photos;
-                        _filter.clear();
-                        _getPhotos();
-                      }
-
-                      streamContentAppBar.sink.add(_appBarTitle!);
-                    });
-              })
-        ],
+        title: const Text("Fotos"),
       ),
       body: BlocProvider(
         create: (context) => _photoBloc,
@@ -135,10 +75,6 @@ class _PhotoListViewState extends State<PhotoListView> {
           }
         },
       ),
-      // floatingActionButton: CustomFloatingActionButton(
-      //   goTo: () => _goToForm(),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 
@@ -146,13 +82,13 @@ class _PhotoListViewState extends State<PhotoListView> {
     return BlocBuilder<PhotoBloc, PhotoState>(
       bloc: _photoBloc,
       builder: (context, state) {
-        if (state is AlbumSuccessState) {
+        if (state is PhotoSuccessState) {
           photos = state.photoList;
           filteredPhotos = photos;
           listLenght = state.photoList.length;
         }
 
-        if (state is AlbumSuccessState) {
+        if (state is PhotoSuccessState) {
           return filteredPhotos.isNotEmpty
               ? ListView.builder(
                   itemBuilder: (BuildContext context, int index) {
@@ -164,6 +100,7 @@ class _PhotoListViewState extends State<PhotoListView> {
                               children: [
                                 PhotoListItem(
                                   photo: filteredPhotos[index],
+                                  user: widget.user,
                                 ),
                                 const SizedBox(height: 20,),
                               ],
@@ -178,10 +115,6 @@ class _PhotoListViewState extends State<PhotoListView> {
         }
       },
     );
-  }
-
-  void _goToForm(){
-    push(context, UserFormPage());
   }
 
 }

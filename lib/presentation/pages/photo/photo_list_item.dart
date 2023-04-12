@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:teste_ciss/data/models/photo.dart';
-
+import 'package:teste_ciss/data/models/user.dart';
 
 class PhotoListItem extends StatelessWidget {
   final Photo photo;
+  final User user;
 
   const PhotoListItem({
     Key? key,
     required this.photo,
+    required this.user,
   }) : super(key: key);
 
   @override
@@ -16,7 +18,10 @@ class PhotoListItem extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text(photo.title, style: textStyle()),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(photo.thumbnailUrl),
+            ),
+            title: Text(user.name, style: textStyle()),
             subtitle: Column(
               children: [
                 const SizedBox(
@@ -24,16 +29,20 @@ class PhotoListItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Flexible(child: Text(photo.title, style: textStyle())),
+                    Flexible(child: Text(user.email, style: textStyle())),
                   ],
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                Row(
-                  children: [
-                    Flexible(child: Text(photo.title, style: textStyle())),
-                  ],
+                Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(photo.url),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ],
             ),
