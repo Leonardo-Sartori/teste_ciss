@@ -1,14 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:teste_ciss/core/injection/injection.dart';
 import 'package:teste_ciss/data/models/user.dart';
-import 'package:teste_ciss/data/repositories/user/user_repository_impl.dart';
+import 'package:teste_ciss/data/repositories/user/user_repository.dart';
 import 'package:teste_ciss/presentation/blocs/user/user_event.dart';
 import 'package:teste_ciss/presentation/blocs/user/user_state.dart';
 
 @injectable
 class UserBloc extends Bloc<UserEvent, UserState> {
-  late final UserRepositoryImpl _userRepositoryImpl;
-
+  final UserRepository _userRepository = getIt.get<UserRepository>();
+  
   UserBloc() : super(UserInitialState()) {    
     on<UserLoadingEvent>((ev, emit) async {
       emit(UserLoadingState(userList: []));
@@ -26,7 +27,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     List<User> users = <User>[];
 
     try {
-      users = await _userRepositoryImpl.getAllUsers();
+      users = await _userRepository.getAllUsers();
       return users;
     } catch (e) {
       throw Exception('Ocorreu um erro ao buscar usuários!');

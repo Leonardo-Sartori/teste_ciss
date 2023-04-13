@@ -1,13 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:teste_ciss/core/injection/injection.dart';
 import 'package:teste_ciss/data/models/post.dart';
-import 'package:teste_ciss/data/repositories/post/post_repository_impl.dart';
+import 'package:teste_ciss/data/repositories/post/post_repository.dart';
 import 'package:teste_ciss/presentation/blocs/post/post_event.dart';
 import 'package:teste_ciss/presentation/blocs/post/post_state.dart';
 
 @injectable
 class PostBloc extends Bloc<PostEvent, PostState> {
-  late PostRepositoryImpl postRepositoryImpl;
+  final PostRepository _postRepository = getIt.get<PostRepository>();
 
   PostBloc() : super(PostInitialState()) {
     on<PostLoadingEvent>((ev, emit) async {
@@ -28,9 +29,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
       try {
         if (ev.post.id != 0) {
-          post = await postRepositoryImpl.update(post: ev.post);
+          post = await _postRepository.update(post: ev.post);
         } else {
-          post = await postRepositoryImpl.save(post: ev.post);
+          post = await _postRepository.save(post: ev.post);
         }
 
         emit(PostSavingSuccessState(postList: [], post: post));
@@ -45,7 +46,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostLoadingState(postList: []));
 
       try {
-        responseCode = await postRepositoryImpl.delete(postId: ev.post.id);
+        responseCode = await _postRepository.delete(postId: ev.post.id);
 
         emit(PostDeletingSuccessState(postList: [], responseCode: responseCode, post: ev.post));
       } catch (error) {
@@ -80,7 +81,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     List<Post> posts = <Post>[];
 
     try {
-      posts = await postRepositoryImpl.getPostsByUser(userId: userId);
+      posts = await _postRepository.getPostsByUser(userId: userId);
       return posts;
     } catch (e) {
       throw Exception('Ocorreu um erro ao buscar os posts do usuário!');

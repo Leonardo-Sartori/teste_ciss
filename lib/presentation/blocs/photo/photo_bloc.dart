@@ -1,13 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:teste_ciss/core/injection/injection.dart';
 import 'package:teste_ciss/data/models/photo.dart';
-import 'package:teste_ciss/data/repositories/photo/photo_repository_impl.dart';
+import 'package:teste_ciss/data/repositories/photo/photo_repository.dart';
 import 'package:teste_ciss/presentation/blocs/photo/photo_event.dart';
 import 'package:teste_ciss/presentation/blocs/photo/photo_state.dart';
 
 @injectable
 class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
-  late final PhotoRepositoryImpl _photoRepositoryImpl;
+  final PhotoRepository _photoRepository = getIt.get<PhotoRepository>();
 
   PhotoBloc() : super(PhotoInitialState()) {    
     on<PhotoLoadingEvent>((ev, emit) async {
@@ -26,7 +27,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     List<Photo> photos = <Photo>[];
 
     try {
-      photos = await _photoRepositoryImpl.getPhotosByAlbum(albumId: albumId);
+      photos = await _photoRepository.getPhotosByAlbum(albumId: albumId);
       return photos;
     } catch (e) {
       throw Exception('Ocorreu um erro ao buscar as imagens do álbum!');

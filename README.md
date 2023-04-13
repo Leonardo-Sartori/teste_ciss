@@ -39,7 +39,7 @@ Projeto de teste para a vaga de desenvolvedor mobile - Flutter
     - Comentários:
         - Listagem de comentários do post;
     - Testes;
-        - Widgtet;
+        - Widget;
         - Integração;
 
 ## Considerações sobre o projeto: 
@@ -57,7 +57,7 @@ Projeto de teste para a vaga de desenvolvedor mobile - Flutter
     - lib/data/repositories:
         - Camada intermediária entre a camada de negócios e de armazenamento;
         - Repository define um conjunto de métodos que a camada de negócios pode acessar;
-        - Repository_impl é responsável por implementar os métodos definidos na Repository;
+        - Repository_impl é responsável por implementar os métodos definidos na Repository;p
     - lib/data/services:
         - Configurações das Apis que o app consome;
     - lib/data/presentation/bloc:
