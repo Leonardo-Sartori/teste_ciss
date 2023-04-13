@@ -8,8 +8,6 @@ import 'package:teste_ciss/presentation/blocs/post/post_state.dart';
 
 @injectable
 class PostBloc extends Bloc<PostEvent, PostState> {
-  final PostRepository _postRepository = getIt.get<PostRepository>();
-
   PostBloc() : super(PostInitialState()) {
     on<PostLoadingEvent>((ev, emit) async {
       emit(PostLoadingState(postList: []));
@@ -23,6 +21,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
 
     on<PostSavingEvent>((ev, emit) async {
+      final PostRepository _postRepository = getIt.get<PostRepository>();
+
       final Post post;
 
       emit(PostLoadingState(postList: []));
@@ -41,6 +41,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
 
     on<PostDeletingEvent>((ev, emit) async {
+      final PostRepository _postRepository = getIt.get<PostRepository>();
       final int responseCode;
 
       emit(PostLoadingState(postList: []));
@@ -79,6 +80,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   Future<List<Post>> _fetchPostList({required int userId}) async {
     List<Post> posts = <Post>[];
+    final PostRepository _postRepository = getIt.get<PostRepository>();
 
     try {
       posts = await _postRepository.getPostsByUser(userId: userId);
