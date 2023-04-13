@@ -20,14 +20,6 @@ class Album extends Equatable {
     user = User(id: map['userId'], name: "", username: "", email: "");
   }
 
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id == 0 ? null : id;
-    data['title'] = title;
-    data['userId'] = user.id;
-    return data;
-  }
-
   @override
   String toString() {
     return title;

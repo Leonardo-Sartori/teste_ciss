@@ -12,7 +12,6 @@ import 'package:teste_ciss/presentation/pages/post/post_list_item.dart';
 import 'package:teste_ciss/presentation/pages/post/post_form_page.dart';
 import 'package:teste_ciss/shared/components/alerts.dart';
 import 'package:teste_ciss/shared/components/custom_bottom_navigator_bar.dart';
-import 'package:teste_ciss/shared/components/custom_floating_action_button.dart';
 import 'package:teste_ciss/shared/components/easy_loading.dart';
 import 'package:teste_ciss/shared/utils/navigator/nav.dart';
 
@@ -154,8 +153,10 @@ class _PostListViewState extends State<PostListView> {
           }
         },
       ),
-      floatingActionButton: CustomFloatingActionButton(
-        goTo: () => _goToForm(),
+      floatingActionButton: FloatingActionButton(
+        key: const Key("floating_button"),
+        onPressed: () => _goToForm(),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );

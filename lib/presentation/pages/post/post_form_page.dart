@@ -14,7 +14,7 @@ class PostFormPage extends StatefulWidget {
   final User user;
   final Post? post;
 
-  const PostFormPage({Key? key, required this.user, this.post}) : super(key: key);
+  const PostFormPage({Key? key, required this.user, this.post}) : super(key: key ?? const Key("postScreen"));
 
   @override
   PostFormPageState createState() => PostFormPageState();

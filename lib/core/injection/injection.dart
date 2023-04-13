@@ -10,7 +10,7 @@ GetIt configureDependencies() => getIt.init();
 
 @module
 abstract class RegisterModule {
-  @singleton
+  @factoryMethod
   HttpClient get http => HttpClient();
 
 }

@@ -1,14 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:teste_ciss/core/injection/injection.dart';
 import 'package:teste_ciss/data/models/album.dart';
-import 'package:teste_ciss/data/repositories/album/album_repository.dart';
+import 'package:teste_ciss/data/repositories/album/album_repository_impl.dart';
 import 'package:teste_ciss/presentation/blocs/album/album_event.dart';
 import 'package:teste_ciss/presentation/blocs/album/album_state.dart';
 
 @injectable
 class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
-  final AlbumRepository _albumRepository = getIt.get<AlbumRepository>();
+  late AlbumRepositoryImpl _albumRepositoryImpl;
 
   AlbumBloc() : super(AlbumInitialState()) {    
     on<AlbumLoadingEvent>((ev, emit) async {
@@ -27,7 +26,7 @@ class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
     List<Album> albums = <Album>[];
 
     try {
-      albums = await _albumRepository.getAlbumsByUser(userId: userId);
+      albums = await _albumRepositoryImpl.getAlbumsByUser(userId: userId);
       return albums;
     } catch (e) {
       throw Exception('Ocorreu um erro ao buscar os álbuns do usuário!');

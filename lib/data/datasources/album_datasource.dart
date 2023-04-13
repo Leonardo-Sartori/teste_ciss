@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:teste_ciss/data/models/album.dart';
-import 'package:teste_ciss/data/models/user.dart';
 import 'package:teste_ciss/data/services/json_placeholder_api/json_placeholder_api.dart';
 import 'package:teste_ciss/shared/constants/api.dart';
 

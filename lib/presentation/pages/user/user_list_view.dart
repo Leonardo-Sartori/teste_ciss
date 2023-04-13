@@ -107,7 +107,7 @@ class _UserListViewState extends State<UserListView> {
                   },
                   itemCount: filteredUsers.length,
                 )
-              : AppNoData();
+              : const AppNoData();
         } else {
           return Container();
         }

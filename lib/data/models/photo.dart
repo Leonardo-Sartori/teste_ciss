@@ -27,16 +27,6 @@ class Photo extends Equatable {
     album = Album(id: map['albumId'], title: "", user: User(id: 0, name: "", username: "", email: ""));
   }
 
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id == 0 ? null : id;
-    data['title'] = title;
-    data['url'] = url;
-    data['thumbnailUrl'] = thumbnailUrl;
-    data['albumId'] = album.id;
-    return data;
-  }
-
   @override
   String toString() {
     return title;

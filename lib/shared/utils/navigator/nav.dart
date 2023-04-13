@@ -19,24 +19,3 @@ bool pop<T extends Object>(BuildContext context, [T? result]) {
   }
   return false;
 }
-
-Future pushNamed(BuildContext context, String routeName, {bool replace = false, Object? args}) {
-  if (replace) {
-    return Navigator.pushReplacementNamed(context, routeName, arguments: args);
-  }
-
-  return Navigator.pushNamed(context, routeName, arguments: args);
-}
-
-bool popAndPushedName<T extends Object>(BuildContext context, String routeName, { bool replace = false, Object? args}) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if(replace){
-      Navigator.restorablePopAndPushNamed(context, routeName, arguments: args);
-    }
-    else {
-      Navigator.popAndPushNamed(context, routeName, arguments: args);
-    }
-  });
-
-  return true;
-}

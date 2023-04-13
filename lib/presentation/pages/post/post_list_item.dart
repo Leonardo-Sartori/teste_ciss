@@ -39,6 +39,7 @@ class PostListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               TextButton(
+                key: const Key("btnComments"),
                   child: const Text('COMENTÁRIOS'),
                   onPressed: () {
                     getComments();

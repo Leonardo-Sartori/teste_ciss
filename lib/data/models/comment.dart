@@ -27,16 +27,6 @@ class Comment extends Equatable {
     post = Post(id: map["postId"], title: "", body: '', user: User(id: 0, name: "", username: "", email: ""));
   }
 
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id == 0 ? null : id;
-    data['name'] = name;
-    data['email'] = email;
-    data['body'] = body;
-    data['postId'] = post.id;
-    return data;
-  }
-
   @override
   String toString() {
     return name;

@@ -59,7 +59,7 @@ extension GetItInjectableX on _i1.GetIt {
     final registerModule = _$RegisterModule();
     gh.factory<_i3.AlbumBloc>(() => _i3.AlbumBloc());
     gh.factory<_i4.CommentBloc>(() => _i4.CommentBloc());
-    gh.singleton<_i5.HttpClient>(registerModule.http);
+    gh.factory<_i5.HttpClient>(() => registerModule.http);
     gh.singleton<_i6.JsonPlaceholderApi>(_i6.JsonPlaceholderApi());
     gh.factory<_i7.PhotoBloc>(() => _i7.PhotoBloc());
     gh.factory<_i8.PhotoDatasource>(() =>

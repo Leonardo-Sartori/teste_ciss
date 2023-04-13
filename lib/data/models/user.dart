@@ -22,15 +22,6 @@ class User extends Equatable {
     email = map['email'];
   }
 
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id == 0 ? null : id;
-    data['name'] = name;
-    data['username'] = username;
-    data['email'] = email;
-    return data;
-  }
-
   @override
   String toString() {
     return name;
